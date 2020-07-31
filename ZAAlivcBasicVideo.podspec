@@ -1,5 +1,5 @@
 #
-# Be sure to run `pod lib lint AlivcBasicVideo.podspec' to ensure this is a
+# Be sure to run `pod lib lint ZAAlivcBasicVideo.podspec' to ensure this is a
 # valid spec before submitting.
 #
 # Any lines starting with a # are optional, but their use is encouraged
@@ -40,7 +40,7 @@ Pod::Spec.new do |s|
       'ZAAlivcBasicVideo' => ['ZAAlivcBasicVideo/Assets/AlivcImage_LongVideo/*.png','ZAAlivcBasicVideo/Assets/AlivcImage_Player/*.png','ZAAlivcBasicVideo/Assets/AlivcImage_TimeShift/*.png','ZAAlivcBasicVideo/Assets/*.dat','ZAAlivcBasicVideo/Classes/**/*.xib']
   }
   
-  s.dependency 'ZAAlivcBasicVideo'
+  s.dependency 'ZAAlivcCommon'
   s.dependency 'MJRefresh', '~> 3.1.15.7'
   s.dependency 'MRDLNA'
 
