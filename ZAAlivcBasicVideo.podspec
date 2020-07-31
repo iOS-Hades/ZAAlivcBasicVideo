@@ -7,7 +7,7 @@
 #
 
 Pod::Spec.new do |s|
-  s.name             = 'AlivcBasicVideo'
+  s.name             = 'ZAAlivcBasicVideo'
   s.version          = '0.1.0'
   s.summary          = '阿里播放器的基础UI'
 
@@ -21,26 +21,26 @@ Pod::Spec.new do |s|
 阿里播放器的基础UI
                        DESC
 
-  s.homepage         = 'https://github.com/iOS-Hades/AlivcBasicVideo'
+  s.homepage         = 'https://github.com/iOS-Hades/ZAAlivcBasicVideo'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'iOS-Hades' => '2319587028@qq.com' }
-  s.source           = { :git => 'https://github.com/iOS-Hades/AlivcBasicVideo.git', :tag => s.version.to_s }
+  s.source           = { :git => 'https://github.com/iOS-Hades/ZAAlivcBasicVideo.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '8.0'
 
   s.static_framework = true
 
-  s.source_files =  'AlivcBasicVideo/Classes/**/*.{h,m,mm}'
+  s.source_files =  'ZAAlivcBasicVideo/Classes/**/*.{h,m,mm}'
     
   s.prefix_header_contents = '#import "AlivcMacro.h"','#import "AlivcImage.h"'
 
   s.resource_bundles = {
-      'AlivcBasicVideo' => ['AlivcBasicVideo/Assets/AlivcImage_LongVideo/*.png','AlivcBasicVideo/Assets/AlivcImage_Player/*.png','AlivcBasicVideo/Assets/AlivcImage_TimeShift/*.png','AlivcBasicVideo/Assets/*.dat','AlivcBasicVideo/Classes/**/*.xib']
+      'ZAAlivcBasicVideo' => ['ZAAlivcBasicVideo/Assets/AlivcImage_LongVideo/*.png','ZAAlivcBasicVideo/Assets/AlivcImage_Player/*.png','ZAAlivcBasicVideo/Assets/AlivcImage_TimeShift/*.png','ZAAlivcBasicVideo/Assets/*.dat','ZAAlivcBasicVideo/Classes/**/*.xib']
   }
   
-  s.dependency 'AlivcCommon'
+  s.dependency 'ZAAlivcBasicVideo'
   s.dependency 'MJRefresh', '~> 3.1.15.7'
   s.dependency 'MRDLNA'
 
