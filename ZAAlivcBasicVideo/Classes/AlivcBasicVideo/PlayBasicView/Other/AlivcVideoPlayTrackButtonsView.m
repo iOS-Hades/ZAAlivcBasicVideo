@@ -24,6 +24,7 @@
         
         self.buttonsArray = [NSMutableArray array];
         self.isHorizontal = isHorizontal;
+        self.indexNumber = @(-1);
         
     }
     return self;
@@ -32,7 +33,6 @@
 - (void)setTitleArray:(NSArray *)titleArray {
     _titleArray = titleArray;
     
-    self.selectIndex = 0;
     for (UIButton *button in self.buttonsArray) {
         [button removeFromSuperview];
     }

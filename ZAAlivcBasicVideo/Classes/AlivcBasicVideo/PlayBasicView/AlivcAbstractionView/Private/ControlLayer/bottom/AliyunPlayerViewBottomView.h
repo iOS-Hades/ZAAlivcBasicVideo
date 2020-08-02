@@ -43,6 +43,10 @@ static const CGFloat ALYPVBottomViewQualityButtonWidth      = 48 + ALYPVBottomVi
  */
 - (void)aliyunPVBottomView:(AliyunPlayerViewBottomView *)bottomView qulityButton:(UIButton *)qulityButton;
 
+/// 功能：点击倍数按钮
+/// @param bottomView 对象本身
+- (void)onClickedRateButtonWithAliyunPVBottomView:(AliyunPlayerViewBottomView *)bottomView rateButton:(UIButton *)rateButton;
+
 - (void)onClickedVideoButtonWithAliyunPVBottomView:(AliyunPlayerViewBottomView *)bottomView;
 
 - (void)onClickedAudioButtonWithAliyunPVBottomView:(AliyunPlayerViewBottomView *)bottomView;
@@ -65,6 +69,8 @@ static const CGFloat ALYPVBottomViewQualityButtonWidth      = 48 + ALYPVBottomVi
 @property (nonatomic,strong)UIButton *videoButton;
 @property (nonatomic,strong)UIButton *audioButton;
 @property (nonatomic,strong)UIButton *subtitleButton;
+/// 倍数播放按钮
+@property (nonatomic,strong)UIButton *rateButton;
 
 
 - (CGFloat)getSliderValue;

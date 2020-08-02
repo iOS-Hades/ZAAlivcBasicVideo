@@ -12,6 +12,8 @@ typedef void(^selectChangedCallBack)(NSInteger index,NSString *title);
 @interface AlivcVideoPlayTrackButtonsView : UIView
 
 @property (nonatomic,assign)NSInteger selectIndex;
+/// 保留值
+@property (nonatomic,retain) NSNumber *indexNumber;
 @property (nonatomic,strong)NSArray <NSString *>*titleArray;
 @property (nonatomic,strong)selectChangedCallBack callBack;
 

@@ -124,10 +124,10 @@ static const CGFloat ALYPVTopViewDownLoadButtonWidth  = 30; //返回按钮宽度
         self.downloadButton.hidden = false;
     }else{
         //横屏
-        self.speedButton.hidden = false;
-        self.danmuButton.hidden = false;
-        self.loopViewButton.hidden = false;
-        self.downloadButton.hidden = true;
+        self.speedButton.hidden = true;
+        self.danmuButton.hidden = true;
+        self.loopViewButton.hidden = true;
+        self.downloadButton.hidden = false;
     }
     
     self.topBarBG.frame = self.bounds;

@@ -32,6 +32,12 @@
 - (void)onSpeedViewClickedWithAliyunControlView:(AliyunPlayerViewControlView*)controlView;
 
 /*
+ * 功能 ： 展示倍速播放界面
+ * 参数 ： controlView 对象本身
+ */
+- (void)onSpeedViewClickedWithAliyunControlView:(AliyunPlayerViewControlView*)controlView rateTitle:(NSString *)rateTitle;
+
+/*
  * 功能 ： 播放按钮
  * 参数 ： controlView 对象本身
  */

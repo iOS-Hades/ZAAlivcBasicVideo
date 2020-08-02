@@ -6,6 +6,7 @@
 #import "AVCLoopView.h"
 #import "AlivcVideoPlayTrackButtonsView.h"
 #import "AlivcUIConfig.h"
+#import "AlivcLongVideoCommonFunc.h"
 
 static const CGFloat ALYControlViewTopViewHeight    = 48;   //topView 高度
 static const CGFloat ALYControlViewBottomViewHeight = 48;   //bottomView 高度
@@ -30,6 +31,8 @@ static const CGFloat ALYControlViewLockButtonHeight = 40;   //lockButton 高度
 @property (nonatomic,strong)AlivcVideoPlayTrackButtonsView *videoTrackView;
 @property (nonatomic,strong)AlivcVideoPlayTrackButtonsView *audioTrackView;
 @property (nonatomic,strong)AlivcVideoPlayTrackButtonsView *subtitleTrackView;
+/// 倍数播放视图
+@property (nonatomic,strong)AlivcVideoPlayTrackButtonsView *ratePlayView;
 
 @end
 @implementation AliyunPlayerViewControlView
@@ -47,9 +50,7 @@ static const CGFloat ALYControlViewLockButtonHeight = 40;   //lockButton 高度
 
 - (QHDanmuManager *)danmuManager {
     if (!_danmuManager) {
-        NSArray *infos = @[@{kDanmuContentKey:@"我是弹幕，您也可以点击画笔发布弹幕",kDanmuTimeKey:@"1"},
-                  @{kDanmuContentKey:@"这个视频非常好看",kDanmuTimeKey:@"2"},
-                  @{kDanmuContentKey:@"哈哈哈",kDanmuTimeKey:@"3"}];
+        NSArray *infos = @[];
         NSInteger loopWidth = ScreenHeight;
         NSInteger loopHeight = ScreenWidth;
         if (ScreenWidth > ScreenHeight) {
@@ -124,14 +125,34 @@ static const CGFloat ALYControlViewLockButtonHeight = 40;   //lockButton 高度
     return _videoTrackView;
 }
 
+- (AlivcVideoPlayTrackButtonsView *)ratePlayView {
+    if (!_ratePlayView) {
+        _ratePlayView = [[AlivcVideoPlayTrackButtonsView alloc]initWithFrame:CGRectZero isHorizontal:NO];
+        _ratePlayView.backgroundColor = [AlivcUIConfig shared].kAVCBackgroundColor;
+        _ratePlayView.hidden = YES;
+        __weak typeof(self)weakself = self;
+        _ratePlayView.callBack = ^(NSInteger index, NSString *title) {
+            if ([weakself.delegate respondsToSelector:@selector(onSpeedViewClickedWithAliyunControlView:rateTitle:)]) {
+                [weakself.delegate onSpeedViewClickedWithAliyunControlView:weakself rateTitle:title];
+            }
+        };
+    }
+    return _ratePlayView;
+}
+
 - (AlivcVideoPlayTrackButtonsView *)audioTrackView {
     if (!_audioTrackView) {
         _audioTrackView = [[AlivcVideoPlayTrackButtonsView alloc]initWithFrame:CGRectZero isHorizontal:NO];
         _audioTrackView.backgroundColor = [AlivcUIConfig shared].kAVCBackgroundColor;
         _audioTrackView.hidden = YES;
-        __weak typeof(self)weakself = self;
+        __weak typeof(self) weakself = self;
         _audioTrackView.callBack = ^(NSInteger index, NSString *title) {
-            [weakself trackButtonsViewSelectDefinition:title];
+            [weakself.bottomView.audioButton setTitle:title forState:UIControlStateNormal];
+            weakself.audioTrackView.selectIndex = index;
+            weakself.audioTrackView.indexNumber = @(index);
+            if ([weakself.delegate respondsToSelector:@selector(onSpeedViewClickedWithAliyunControlView:rateTitle:)]) {
+                [weakself.delegate onSpeedViewClickedWithAliyunControlView:weakself rateTitle:title];
+            }
         };
     }
     return _audioTrackView;
@@ -177,18 +198,19 @@ static const CGFloat ALYControlViewLockButtonHeight = 40;   //lockButton 高度
     _info = info;
     
     NSMutableArray * videoTracksArray = [NSMutableArray array];
-    NSMutableArray * audioTracksArray = [NSMutableArray array];
+//    NSMutableArray * audioTracksArray = [NSMutableArray array];
     NSMutableArray * subtitleTracksArray = [NSMutableArray array];
     NSMutableArray * vodTracksArray = [NSMutableArray array];
     for (int i=0; i<info.count; i++) {
         AVPTrackInfo* track = [info objectAtIndex:i];
         switch (track.trackType) {
             case AVPTRACK_TYPE_VIDEO: {
-                [videoTracksArray addObject:track.trackDefinition];
+                NSString *titles = [AlivcLongVideoCommonFunc definitionWithEngStr:track.trackDefinition];
+                [videoTracksArray addObject:titles];
             }
                 break;
             case AVPTRACK_TYPE_AUDIO: {
-                [audioTracksArray addObject:track.trackDefinition];
+//                [audioTracksArray addObject:track.trackDefinition];
             }
                 break;
             case AVPTRACK_TYPE_SUBTITLE: {
@@ -196,15 +218,27 @@ static const CGFloat ALYControlViewLockButtonHeight = 40;   //lockButton 高度
                 break;
             }
             case AVPTRACK_TYPE_SAAS_VOD: {
-                [vodTracksArray addObject:track.trackDefinition];
+                NSString *titles = [AlivcLongVideoCommonFunc definitionWithEngStr:track.trackDefinition];
+                [vodTracksArray addObject:titles];
             }
                 break;
             default:
                 break;
         }
     }
-    self.audioTrackView.titleArray = audioTracksArray;
+//    self.audioTrackView.titleArray = audioTracksArray;
+    self.audioTrackView.titleArray = @[@"2.0X", @"1.5X", @"1.25X", @"1.0X", @"0.75X"];
+    if (self.audioTrackView.indexNumber.intValue == -1) {
+        NSInteger index = [self.audioTrackView.titleArray indexOfObject:@"1.0X"];
+        if (index >= 0) {
+            self.audioTrackView.selectIndex = index;
+            self.audioTrackView.indexNumber = @(index);
+        }else{
+            self.audioTrackView.indexNumber = @(0);
+        }
+    }
     self.subtitleTrackView.titleArray = subtitleTracksArray;
+    
     if (vodTracksArray.count > 0) {
         self.videoTrackView.titleArray = vodTracksArray;
         [self.bottomView.videoButton setTitle:@"清晰度" forState:UIControlStateNormal];
@@ -219,13 +253,24 @@ static const CGFloat ALYControlViewLockButtonHeight = 40;   //lockButton 高度
         [self.bottomView.videoButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
         self.bottomView.videoButton.userInteractionEnabled = NO;
     }
-    if (audioTracksArray.count > 0) {
-        [self.bottomView.audioButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        self.bottomView.audioButton.userInteractionEnabled = YES;
-    }else {
-        [self.bottomView.audioButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-        self.bottomView.audioButton.userInteractionEnabled = NO;
-    }
+    
+    // 倍数视图
+    self.ratePlayView.titleArray = @[@"0.75X", @"1.0X", @"1.25X", @"1.5X", @"2.0X"];
+    [self.bottomView.rateButton setTitle:@"倍数" forState:UIControlStateNormal];
+    [self.bottomView.rateButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    self.bottomView.rateButton.userInteractionEnabled = YES;
+    
+//    if (audioTracksArray.count > 0) {
+//        [self.bottomView.audioButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//        self.bottomView.audioButton.userInteractionEnabled = YES;
+//    }else {
+//        [self.bottomView.audioButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+//        self.bottomView.audioButton.userInteractionEnabled = NO;
+//    }
+    
+    [self.bottomView.audioButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    self.bottomView.audioButton.userInteractionEnabled = YES;
+    
     if (subtitleTracksArray.count > 0) {
         [self.bottomView.subtitleButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         self.bottomView.subtitleButton.userInteractionEnabled = YES;
@@ -278,6 +323,7 @@ static const CGFloat ALYControlViewLockButtonHeight = 40;   //lockButton 高度
         [self addSubview:self.snapshopButton];
         
         [self addSubview:self.videoTrackView];
+        [self addSubview:self.ratePlayView];
         [self addSubview:self.audioTrackView];
         [self addSubview:self.subtitleTrackView];
         
@@ -345,7 +391,7 @@ static const CGFloat ALYControlViewLockButtonHeight = 40;   //lockButton 高度
         
         self.loopView.frame = CGRectMake(0, 0, self.bounds.size.width, 40);
         
-        self.videoTrackView.frame = self.audioTrackView.frame = self.subtitleTrackView.frame = CGRectMake(self.frame.size.width-self.frame.size.height*9/16, 0, self.frame.size.height*9/16, self.frame.size.height);
+        self.ratePlayView.frame = self.videoTrackView.frame = self.audioTrackView.frame = self.subtitleTrackView.frame = CGRectMake(self.frame.size.width-self.frame.size.height*9/16, 0, self.frame.size.height*9/16, self.frame.size.height);
        
     }
     self.listView.frame = CGRectMake(tempX, height-[self.listView estimatedHeight]-self.bottomView.frame.size.height, tempW, [self.listView estimatedHeight]);
@@ -456,13 +502,14 @@ static const CGFloat ALYControlViewLockButtonHeight = 40;   //lockButton 高度
         if (self.delegate && [self.delegate respondsToSelector:@selector(onBackViewClickWithAliyunControlView:)]) {
             [self.delegate onBackViewClickWithAliyunControlView:self];
         }
-    
+    self.ratePlayView.hidden = true;
 }
 
 - (void)onDownloadButtonClickWithAliyunPVTopView:(AliyunPlayerViewTopView *)topView{
     if (self.delegate && [self.delegate respondsToSelector:@selector(onDownloadButtonClickWithAliyunControlView:)]) {
         [self.delegate onDownloadButtonClickWithAliyunControlView:self];
     }
+    self.ratePlayView.hidden = true;
 }
 
 - (void)onSpeedViewClickedWithAliyunPVTopView:(AliyunPlayerViewTopView *)topView{
@@ -511,6 +558,7 @@ static const CGFloat ALYControlViewLockButtonHeight = 40;   //lockButton 高度
     if (self.delegate && [self.delegate respondsToSelector:@selector(aliyunControlView:dragProgressSliderValue:event:)]) {
         [self.delegate aliyunControlView:self dragProgressSliderValue:progressValue event:event];
     }
+    self.ratePlayView.hidden = true;
 }
 
 - (void)onClickedPlayButtonWithAliyunPVBottomView:(AliyunPlayerViewBottomView *)bottomView {
@@ -519,6 +567,7 @@ static const CGFloat ALYControlViewLockButtonHeight = 40;   //lockButton 高度
     if (self.delegate && [self.delegate respondsToSelector:@selector(onClickedPlayButtonWithAliyunControlView:)]) {
         [self.delegate onClickedPlayButtonWithAliyunControlView:self];
     }
+    self.ratePlayView.hidden = true;
 }
 
 - (void)aliyunPVBottomView:(AliyunPlayerViewBottomView *)bottomView qulityButton:(UIButton *)qulityButton{
@@ -528,6 +577,7 @@ static const CGFloat ALYControlViewLockButtonHeight = 40;   //lockButton 高度
     } else {
         [self.listView removeFromSuperview];
     }
+    self.ratePlayView.hidden = true;
 }
 
 - (void)onClickedfullScreenButtonWithAliyunPVBottomView:(AliyunPlayerViewBottomView *)bottomView {
@@ -535,11 +585,19 @@ static const CGFloat ALYControlViewLockButtonHeight = 40;   //lockButton 高度
     if (self.delegate && [self.delegate respondsToSelector:@selector(onClickedfullScreenButtonWithAliyunControlView:)]) {
         [self.delegate onClickedfullScreenButtonWithAliyunControlView:self];
     }
+    self.ratePlayView.hidden = true;
 }
 
 - (void)onClickedVideoButtonWithAliyunPVBottomView:(AliyunPlayerViewBottomView *)bottomView {
     self.videoTrackView.hidden = NO;
     [self bringSubviewToFront:self.videoTrackView];
+    [self hiddenView];
+    self.ratePlayView.hidden = true;
+}
+
+- (void)onClickedRateButtonWithAliyunPVBottomView:(AliyunPlayerViewBottomView *)bottomView rateButton:(UIButton *)rateButton {
+    self.ratePlayView.hidden = NO;
+    [self bringSubviewToFront:self.ratePlayView];
     [self hiddenView];
 }
 
@@ -547,12 +605,14 @@ static const CGFloat ALYControlViewLockButtonHeight = 40;   //lockButton 高度
     self.audioTrackView.hidden = NO;
     [self bringSubviewToFront:self.audioTrackView];
     [self hiddenView];
+    self.ratePlayView.hidden = true;
 }
 
 - (void)onClickedSubtitleButtonWithAliyunPVBottomView:(AliyunPlayerViewBottomView *)bottomView {
     self.subtitleTrackView.hidden = NO;
     [self bringSubviewToFront:self.subtitleTrackView];
     [self hiddenView];
+    self.ratePlayView.hidden = true;
 }
 
 #pragma mark - AliyunPVGestureViewDelegate
@@ -623,6 +683,7 @@ static const CGFloat ALYControlViewLockButtonHeight = 40;   //lockButton 高度
     if (self.delegate && [self.delegate respondsToSelector:@selector(aliyunControlView:dragProgressSliderValue:event:)]) {
         [self.delegate aliyunControlView:self dragProgressSliderValue:self.bottomView.progress event:UIControlEventTouchDown];
     }
+    self.ratePlayView.hidden = true;
 }
 
 //手势结束
@@ -670,7 +731,7 @@ static const CGFloat ALYControlViewLockButtonHeight = 40;   //lockButton 高度
     if (isScreenLocked || fixedPortrait) {
         [self.guestureView setEnableGesture:NO];
     }
-
+    
     [self.bottomView updateViewWithPlayerState: state];
     
 }
@@ -759,6 +820,7 @@ static const CGFloat ALYControlViewLockButtonHeight = 40;   //lockButton 高度
 }
 - (void)showViewWithOutDelayHide {
     [self showView];
+    self.ratePlayView.hidden = true;
     self.guestureView.delegate = nil;
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(delayHideControlLayer) object:nil];
 }

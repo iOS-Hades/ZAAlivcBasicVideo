@@ -140,9 +140,26 @@ static NSString * const ALYPVBottomViewDefaultTime          = @"00:00:00";      
     return _videoButton;
 }
 
+- (UIButton *)rateButton {
+    if (!_rateButton) {
+        _rateButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_rateButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_rateButton setTitle:[@"倍数" localString] forState:UIControlStateNormal];
+        _rateButton.titleLabel.font = [UIFont boldSystemFontOfSize:ALYPVBottomViewTextSizeFont];
+        [_rateButton addTarget:self action:@selector(rateButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _rateButton;
+}
+
 - (void)videoButtonAction:(UIButton *)sender {
     if ([self.delegate respondsToSelector:@selector(onClickedVideoButtonWithAliyunPVBottomView:)]) {
         [self.delegate onClickedVideoButtonWithAliyunPVBottomView:self];
+    }
+}
+
+- (void)rateButtonAction:(UIButton *)sender {
+    if ([self.delegate respondsToSelector:@selector(onClickedRateButtonWithAliyunPVBottomView:rateButton:)]) {
+        [self.delegate onClickedRateButtonWithAliyunPVBottomView:self rateButton:sender];
     }
 }
 
@@ -150,7 +167,7 @@ static NSString * const ALYPVBottomViewDefaultTime          = @"00:00:00";      
     if (!_audioButton) {
         _audioButton = [[UIButton alloc] init];
         [_audioButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [_audioButton setTitle:[@"音轨" localString] forState:UIControlStateNormal];
+        [_audioButton setTitle:[@"倍速" localString] forState:UIControlStateNormal];
         _audioButton.titleLabel.font = [UIFont boldSystemFontOfSize:ALYPVBottomViewTextSizeFont];
         [_audioButton addTarget:self action:@selector(audioButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -202,6 +219,7 @@ static NSString * const ALYPVBottomViewDefaultTime          = @"00:00:00";      
     [self addSubview:self.rightTimeLabel];
     [self addSubview:self.fullScreenTimeLabel];
     [self addSubview:self.videoButton];
+    [self addSubview:self.rateButton];
     [self addSubview:self.audioButton];
     [self addSubview:self.subtitleButton];
 //    [self addSubview:self.qualityButton];//原来的x清晰度按钮
@@ -222,6 +240,7 @@ static NSString * const ALYPVBottomViewDefaultTime          = @"00:00:00";      
         
     self.playButton.frame = CGRectMake(0, self.frame.size.height-height,ALYPVBottomViewPlayButtonWidth, height);
     self.fullScreenButton.frame = CGRectMake(width - ALYPVBottomViewFullScreenButtonWidth, self.frame.size.height-height,ALYPVBottomViewFullScreenButtonWidth, height);
+//    self.rateButton.frame = CGRectMake(width - ALYPVBottomViewFullScreenButtonWidth - ALYPVBottomViewFullScreenButtonWidth - 10, self.frame.size.height-height,ALYPVBottomViewFullScreenButtonWidth, height);
     
     if (self.isPortrait) {
         self.fullScreenButton.selected = YES;
@@ -229,7 +248,7 @@ static NSString * const ALYPVBottomViewDefaultTime          = @"00:00:00";      
         self.leftTimeLabel.hidden = NO;
         self.rightTimeLabel.hidden = NO;
         self.fullScreenTimeLabel.hidden = YES;
-    
+        self.rateButton.hidden = YES;
         int qualityWidth = ALYPVBottomViewQualityButtonWidth;
         NSArray *qualityAry = [self.videoInfo.tracks copy];
         if (qualityAry && qualityAry.count>0) {
@@ -253,11 +272,12 @@ static NSString * const ALYPVBottomViewDefaultTime          = @"00:00:00";      
         self.fullScreenButton.selected = NO;
         self.qualityButton.hidden = YES;
         self.qualityButton.selected = NO;
-        
+        self.rateButton.hidden = YES;
         self.leftTimeLabel.hidden = NO;
         self.rightTimeLabel.hidden = NO;
         self.fullScreenTimeLabel.hidden = YES;
         self.fullScreenButton.hidden = NO;
+        self.audioButton.hidden = YES;
 //        self.videoButton.hidden = self.audioButton.hidden = self.subtitleButton.hidden = YES;
         
         self.progressView.frame = CGRectMake(ALYPVBottomViewPlayButtonWidth, 0,
@@ -272,11 +292,12 @@ static NSString * const ALYPVBottomViewDefaultTime          = @"00:00:00";      
         self.fullScreenButton.selected = YES;
         self.qualityButton.hidden = NO;
 //        self.qualityButton.selected = NO;
-        
+//        self.rateButton.hidden = NO;
         self.leftTimeLabel.hidden = NO;
         self.rightTimeLabel.hidden = NO;
         self.fullScreenTimeLabel.hidden = YES;
         self.fullScreenButton.hidden = YES;
+        self.audioButton.hidden = NO;
 //        self.videoButton.hidden = self.audioButton.hidden = self.subtitleButton.hidden = NO;
         
         self.fullScreenTimeLabel.frame = CGRectMake(ALYPVBottomViewPlayButtonWidth, 0,ALYPVBottonViewFullScreenTimeWidth, height);

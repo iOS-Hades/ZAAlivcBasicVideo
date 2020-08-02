@@ -33,6 +33,10 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)onDownloadButtonClickWithAliyunVodPlayerView:(AlivcLongVideoPlayView*)playerView;
 
+/// 功能：倍数播放时间
+/// @param playerView 播放视图
+- (void)onRatePlayButtonClickWithAliyunVodPlayerView:(AlivcLongVideoPlayView*)playerView;
+
 /**
  * 功能：所有事件发生的汇总
  * 参数：event ： 发生的事件
@@ -111,6 +115,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param backBtnisShow 返回按钮是否隐藏
 /// @param titleisShow 标题标签是否隐藏
 - (void)setTopViewWithBackBtnisShow:(BOOL)backBtnisShow topViewWithTitleisShow:(BOOL)titleisShow;
+
+/// 是否正在播放
+@property (nonatomic, assign) BOOL isPlay;
 
 @property (nonatomic, assign)NSTimeInterval longVideoDuration;
 /**

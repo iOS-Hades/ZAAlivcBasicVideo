@@ -8,6 +8,7 @@
 
 #import "AlivcLongVideoBasicViewController.h"
 #import "AlivcVideoPlayPlayerConfig.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface AlivcLongVideoViewDetailController : AlivcLongVideoBasicViewController

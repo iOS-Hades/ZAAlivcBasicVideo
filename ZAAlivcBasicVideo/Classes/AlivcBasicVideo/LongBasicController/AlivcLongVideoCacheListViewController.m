@@ -444,7 +444,7 @@
     if (!_downloadTableView) {
         
         _downloadTableView = [[UITableView alloc]init];
-        NSString *path = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"AlivcBasicVideo.bundle"];
+        NSString *path = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"ZAAlivcBasicVideo.bundle"];
         NSBundle *bundle = [NSBundle bundleWithPath:path];
         [_downloadTableView registerNib:[UINib nibWithNibName:@"AVCVideoDownloadTCell" bundle:bundle] forCellReuseIdentifier:@"AVCVideoDownloadTCell"];
         _downloadTableView.tableFooterView = [UIView new];

@@ -185,10 +185,8 @@ static const CGFloat AlilyunViewLoadingViewHeight = 120;
 - (AliyunPlayerViewControlView *)controlView{
     if (!_controlView) {
         _controlView = [[AliyunPlayerViewControlView alloc] init];
-        [_controlView.topView.downloadButton removeFromSuperview];
         [_controlView.sendTextButton removeFromSuperview];
         [_controlView.snapshopButton removeFromSuperview];
-        _controlView.topView.backButton.hidden = true;
         [_controlView.topView.danmuButton removeFromSuperview];
         _controlView.topView.titleLabel.hidden = true;
         _controlView.bottomView.audioButton.hidden = true;
@@ -537,6 +535,7 @@ static const CGFloat AlilyunViewLoadingViewHeight = 120;
         self.nativePlayerView = nil;
     }
     [self.aliPlayer pause];
+    self.isPlay = NO;
     self.nativePlayerView  = [[AVCNativePlayerView alloc]initWithFrame:self.bounds url:self.currentTrackInfo.vodPlayUrl screenMirrorType:DLNAType];
     [self.nativePlayerView setCurrentTrackInfo:self.currentTrackInfo];
     NSArray *array = [self.aliPlayer getMediaInfo].tracks;
@@ -735,6 +734,11 @@ static const CGFloat AlilyunViewLoadingViewHeight = 120;
             if (self.delegate &&[self.delegate respondsToSelector:@selector(aliyunVodPlayerView:fullScreen:)]) {
                 [self.delegate aliyunVodPlayerView:self fullScreen:YES];
             }
+            if (self.isPlay) {
+                self.controlView.bottomView.rateButton.hidden = NO;
+            }else{
+                self.controlView.bottomView.rateButton.hidden = YES;
+            }
         }
             break;
         case UIDeviceOrientationPortrait:
@@ -758,6 +762,9 @@ static const CGFloat AlilyunViewLoadingViewHeight = 120;
                 [self.delegate aliyunVodPlayerView:self fullScreen:NO];
             }
             [self.guideView removeFromSuperview];
+            
+            self.controlView.bottomView.rateButton.hidden = YES;
+            
         }
             break;
         default:
@@ -776,6 +783,7 @@ static const CGFloat AlilyunViewLoadingViewHeight = 120;
 - (void)releasePlayer {
     
     [self.aliPlayer stop];
+    self.isPlay = NO;
     [self.aliPlayer destroy];
     if (self.imageAdsView) {
         [self.imageAdsView releaseTimer];
@@ -925,6 +933,7 @@ static const CGFloat AlilyunViewLoadingViewHeight = 120;
             if ([weakSelf isImageAds]) {
                 startPlayVideo();
                 [weakSelf.aliPlayer start];
+                weakSelf.isPlay = YES;
             }
         };
         self.imageAdsView.goback = ^{
@@ -940,6 +949,7 @@ static const CGFloat AlilyunViewLoadingViewHeight = 120;
         self.freeTrialView = [[AVCFreeTrialView alloc]initWithFreeTime:self.currentModel.previewTime freeTrialType:FreeTrialStart inView:self];
         startPlayVideo();
         [self.aliPlayer start];
+        self.isPlay = YES;
     }else if ([self isVideoAds]) {
         if (!self.adsPlayerView) {
             self.adsPlayerView = [[AliyunVodAdsPlayerView alloc]initWithFrame:self.bounds];
@@ -955,6 +965,7 @@ static const CGFloat AlilyunViewLoadingViewHeight = 120;
             [self.adsPlayerView startPlay];
         }
         startPlayVideo();
+        self.isPlay = YES;
     }else {
         if (self.freeTrialView) {
             [self.freeTrialView removeFromSuperview];
@@ -962,6 +973,7 @@ static const CGFloat AlilyunViewLoadingViewHeight = 120;
         }
         startPlayVideo();
         [self.aliPlayer start];
+        self.isPlay = YES;
     }
 }
 
@@ -1092,7 +1104,7 @@ static const CGFloat AlilyunViewLoadingViewHeight = 120;
         [self.aliPlayer setMpsSource:self.mpsSource];
         [self.aliPlayer prepare];
         [self.aliPlayer start];
-        
+        self.isPlay = YES;
         NSLog(@"播放器mtsHlsUriToken");
     };
     
@@ -1106,6 +1118,7 @@ static const CGFloat AlilyunViewLoadingViewHeight = 120;
         self.imageAdsView = nil;
     }
     [self.aliPlayer start];
+    self.isPlay = YES;
 }
 
 - (void)pause{
@@ -1123,6 +1136,7 @@ static const CGFloat AlilyunViewLoadingViewHeight = 120;
     }
     
     [self.aliPlayer pause];
+    self.isPlay = NO;
     self.currentPlayStatus = AVPStatusPaused; // 快速的前后台切换时，播放器状态的变化不能及时传过来
     
     NSLog(@"播放器pause");
@@ -1130,6 +1144,7 @@ static const CGFloat AlilyunViewLoadingViewHeight = 120;
 
 - (void)resume{
     [self.aliPlayer start];
+    self.isPlay = YES;
     self.currentPlayStatus = AVPStatusStarted;
     dispatch_async(dispatch_get_main_queue(), ^{
         if (self.imageAdsView) {
@@ -1149,6 +1164,7 @@ static const CGFloat AlilyunViewLoadingViewHeight = 120;
 
 - (void)stop {
     [self.aliPlayer stop];
+    self.isPlay = NO;
     NSLog(@"播放器stop");
 }
 
@@ -1165,6 +1181,7 @@ static const CGFloat AlilyunViewLoadingViewHeight = 120;
 
 - (void)replay{
     [self.aliPlayer start];
+    self.isPlay = YES;
     NSLog(@"播放器replay");
 }
 
@@ -1363,6 +1380,7 @@ static const CGFloat AlilyunViewLoadingViewHeight = 120;
     if (self.currentModel.authorityType == AlivcPlayVideoFreeTrialType && position >= self.currentModel.previewTime *1000) {
         [self.controlView updateProgressWithCurrentTime:300 *1000 durationTime:self.aliPlayer.duration];
         [self.aliPlayer stop];
+        self.isPlay = NO;
         if (self.freeTrialView) {
             [self.freeTrialView removeFromSuperview];
             self.freeTrialView = nil;
@@ -1558,9 +1576,11 @@ static const CGFloat AlilyunViewLoadingViewHeight = 120;
             [self seekTo:0];
             [self.aliPlayer prepare];
             [self.aliPlayer start];
+            self.isPlay = YES;
         }
             break;
         case ALYPVErrorTypeRetry: {
+            self.isPlay = NO;
             if ([self.delegate respondsToSelector:@selector(onRetryButtonClickWithAliyunVodPlayerView:)]) {
                 [self.delegate onRetryButtonClickWithAliyunVodPlayerView:self];
             }else {
@@ -1569,10 +1589,12 @@ static const CGFloat AlilyunViewLoadingViewHeight = 120;
         }
             break;
         case ALYPVErrorTypePause: {
+            self.isPlay = NO;
             [self updatePlayDataReplayWithPlayMethod:self.playMethod];
         }
             break;
         case ALYPVErrorTypeStsExpired: {
+            self.isPlay = NO;
             if ([self.delegate respondsToSelector:@selector(onSecurityTokenExpiredWithAliyunVodPlayerView:)]) {
                 [self.delegate onSecurityTokenExpiredWithAliyunVodPlayerView:self];
             }else {
@@ -1587,6 +1609,7 @@ static const CGFloat AlilyunViewLoadingViewHeight = 120;
 
 - (void)retry {
     [self stop];
+    self.isPlay = NO;
     //重试播放
     if ([self networkChangedToShowPopView]) {
         return;
@@ -1597,6 +1620,7 @@ static const CGFloat AlilyunViewLoadingViewHeight = 120;
         [self seekTo:self.saveCurrentTime*1000];
     }
     [self.aliPlayer start];
+    self.isPlay = YES;
 }
 
 /*
@@ -1682,6 +1706,7 @@ static const CGFloat AlilyunViewLoadingViewHeight = 120;
             [self seekTo:self.saveCurrentTime*1000];
         }
         [self.aliPlayer start];
+        self.isPlay = YES;
     }else {
         self.urlSource = [[AVPUrlSource alloc]init];
         self.urlSource.playerUrl = self.localSource.url;
@@ -1728,6 +1753,7 @@ static const CGFloat AlilyunViewLoadingViewHeight = 120;
             [self seekTo:self.saveCurrentTime*1000];
         }
         [self.aliPlayer start];
+        self.isPlay = YES;
     }
 }
 
@@ -1883,15 +1909,20 @@ static const CGFloat AlilyunViewLoadingViewHeight = 120;
     AVPStatus state = [self playerViewState];
     if (state == AVPStatusStarted){
         [self pause];
+        self.isPlay = NO;
     }else if (state == AVPStatusPrepared){
         [self.aliPlayer start];
+        self.isPlay = YES;
     }else if(state == AVPStatusPaused){
         [self resume];
+        self.isPlay = YES;
     }else if (state == AVPStatusStopped){
         if (self.playerConfig) {
             [self.aliPlayer prepare];
+            self.isPlay = NO;
         }else {
             [self resume];
+            self.isPlay = YES;
         }
     }
 }
@@ -1974,6 +2005,7 @@ static const CGFloat AlilyunViewLoadingViewHeight = 120;
                 [self.adsPlayerView removeFromSuperview];
                 self.adsPlayerView = nil;
                 [self.aliPlayer stop];
+                self.isPlay = NO;
             }else if ([self isVideoAds]) {
                 CGFloat seek = [_adsPlayerView allowSeek:progressValue];
                 if (seek == 0) {
@@ -1994,6 +2026,7 @@ static const CGFloat AlilyunViewLoadingViewHeight = 120;
                 if (self.currentModel.authorityType == AlivcPlayVideoFreeTrialType && self.currentModel.previewTime > 0 && self.currentModel.previewTime < progressValue*self.aliPlayer.duration) {
                     self.currentPlayStatus = AVPStatusPaused;
                     [self.aliPlayer stop];
+                    self.isPlay = NO;
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                         //在播放器回调的方法里，防止sdk异常不进行seekdone的回调，在3秒后增加处理，防止ui一直异常
                         self.mProgressCanUpdate = YES;
@@ -2007,6 +2040,7 @@ static const CGFloat AlilyunViewLoadingViewHeight = 120;
             AVPStatus state = [self playerViewState];
             if (state == AVPStatusPaused) {
                 [self.aliPlayer start];
+                self.isPlay = YES;
             }
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 //在播放器回调的方法里，防止sdk异常不进行seekdone的回调，在3秒后增加处理，防止ui一直异常
@@ -2081,6 +2115,7 @@ static const CGFloat AlilyunViewLoadingViewHeight = 120;
     self.danmuSendV.deleagte = self;
     [self.danmuSendV showAction:self];
     [self.aliPlayer pause];
+    self.isPlay = NO;
     NSLog(@"发送弹幕");
 }
 
@@ -2092,6 +2127,20 @@ static const CGFloat AlilyunViewLoadingViewHeight = 120;
 
 - (void)onSpeedViewClickedWithAliyunControlView:(AliyunPlayerViewControlView *)controlView {
     [self.moreView showSpeedViewMoveInAnimate];
+}
+
+- (void)onSpeedViewClickedWithAliyunControlView:(AliyunPlayerViewControlView *)controlView rateTitle:(NSString *)rateTitle {
+    if ([rateTitle isEqualToString:@"0.75X"]) {
+        [self setRate:0.75];
+    }else if ([rateTitle isEqualToString:@"1.0X"]) {
+        [self setRate:1];
+    }else if ([rateTitle isEqualToString:@"1.25X"]) {
+        [self setRate:1.25];
+    }else if ([rateTitle isEqualToString:@"1.5X"]) {
+        [self setRate:1.5];
+    }else if ([rateTitle isEqualToString:@"2.0X"]) {
+        [self setRate:2];
+    }
 }
 
 - (void)aliyunControlView:(AliyunPlayerViewControlView*)controlView selectTrackIndex:(NSInteger)trackIndex {
@@ -2201,6 +2250,7 @@ static const CGFloat AlilyunViewLoadingViewHeight = 120;
             }
         }else if(self.playerViewState == AVPStatusPrepared){
             [self.aliPlayer start];
+            self.isPlay = YES;
         }
     }
 }

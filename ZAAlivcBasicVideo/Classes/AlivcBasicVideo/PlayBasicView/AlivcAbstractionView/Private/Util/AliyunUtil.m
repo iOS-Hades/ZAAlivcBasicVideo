@@ -10,8 +10,8 @@
 #import <ifaddrs.h>
 #import <arpa/inet.h>
 
-static NSString * const AliyunUtilImageBundleName = @"AlivcBasicVideo.bundle";
-static NSString * const AliyunUtilImageBundle     = @"AlivcBasicVideo";
+static NSString * const AliyunUtilImageBundleName = @"ZAAlivcBasicVideo.bundle";
+static NSString * const AliyunUtilImageBundle     = @"ZAAlivcBasicVideo";
 static NSString * const AliyunUtilLanguageBundle  = @"AliyunLanguageSource";
 static const CGFloat AliyunUtilTitleNomalTextSize = 28;
 static NSString * const ALYPVVersion  = @"3.4.0";
