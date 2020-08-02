@@ -23,7 +23,7 @@
 #import "UIScrollView+NetworkLost.h"
 #import "AVPTool.h"
 #import "AlivcLongVideoDBManager.h"
-//#import "AVPDemoServerManager.h"
+#import "AVPDemoServerManager.h"
 
 #import "AlivcPlayVideoRequestManager.h"
 
@@ -914,7 +914,7 @@
         self.playerConfig.liveStsSource.accessKeyId = responseObject.data.accessKeyId;
         self.playerConfig.liveStsSource.accessKeySecret = responseObject.data.accessKeySecret;
         self.playerConfig.liveStsSource.securityToken = responseObject.data.securityToken;
-//        self.playerConfig.liveStsExpireTime = [AVPDemoServerManager getExpirTime:responseObject.data.expiration];
+        self.playerConfig.liveStsExpireTime = [AVPDemoServerManager getExpirTime:responseObject.data.expiration];
         
         [self.playerView playwithUpdateLiveSts:self.playerConfig];
     } failure:^(NSString *errorMsg) {
@@ -955,7 +955,7 @@
                        self.playerConfig.liveStsSource.accessKeyId = responseObject.data.accessKeyId;
                        self.playerConfig.liveStsSource.accessKeySecret = responseObject.data.accessKeySecret;
                        self.playerConfig.liveStsSource.securityToken = responseObject.data.securityToken;
-//                       self.playerConfig.liveStsExpireTime = [AVPDemoServerManager getExpirTime:responseObject.data.expiration];
+                       self.playerConfig.liveStsExpireTime = [AVPDemoServerManager getExpirTime:responseObject.data.expiration];
                        
                        [self.playerView playWithPlayerConfig:self.playerConfig];
                    } failure:^(NSString *errorMsg) {
