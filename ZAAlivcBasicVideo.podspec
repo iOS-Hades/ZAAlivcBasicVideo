@@ -34,7 +34,7 @@ Pod::Spec.new do |s|
 
   s.source_files =  'ZAAlivcBasicVideo/Classes/**/*.{h,m,mm}'
     
-  s.prefix_header_contents = '#import "AlivcMacro.h"','#import "AlivcImage.h"', '#import <MJRefresh.h>', "#import <MRDLNA.h>"
+  s.prefix_header_contents = '#import "AlivcMacro.h"','#import "AlivcImage.h"'
 
   s.resource_bundles = {
       'ZAAlivcBasicVideo' => ['ZAAlivcBasicVideo/Assets/AlivcImage_LongVideo/*.png','ZAAlivcBasicVideo/Assets/AlivcImage_Player/*.png','ZAAlivcBasicVideo/Assets/AlivcImage_TimeShift/*.png','ZAAlivcBasicVideo/Assets/*.dat','ZAAlivcBasicVideo/Classes/**/*.xib']
