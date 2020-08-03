@@ -6,7 +6,7 @@
 //
 
 #import "AlivcBasicVideoRequestManager.h"
-#import <AFNetworking/AFNetworking.h>
+
 #import "NSString+AlivcHelper.h"
 
 #define  TIME_OUT     10 //请求超时时间

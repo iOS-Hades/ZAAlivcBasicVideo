@@ -6,6 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <AFNetworking/AFNetworking.h>
 
 typedef void(^requestSuccess)(id responseObject);
 typedef void(^requestFailure)(NSString *errorMsg);

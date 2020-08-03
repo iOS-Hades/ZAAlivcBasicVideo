@@ -23,6 +23,11 @@ typedef NS_ENUM(NSUInteger, AVPUrlType) {
 
 @interface AlivcPlayVideoRequestManager : AlivcBasicVideoRequestManager
 
+@property (nonatomic, copy) NSString *BASE_URL;
+@property (nonatomic, copy) NSString *URL_PATH;
+
++ (AlivcPlayVideoRequestManager *)shared;
+
 /**
  开始get请求
  
