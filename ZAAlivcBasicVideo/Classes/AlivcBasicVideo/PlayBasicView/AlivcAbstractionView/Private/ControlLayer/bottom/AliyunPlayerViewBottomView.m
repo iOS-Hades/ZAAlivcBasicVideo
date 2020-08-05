@@ -133,7 +133,7 @@ static NSString * const ALYPVBottomViewDefaultTime          = @"00:00:00";      
     if (!_videoButton) {
         _videoButton = [[UIButton alloc] init];
         [_videoButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [_videoButton setTitle:[@"码率" localString] forState:UIControlStateNormal];
+        [_videoButton setTitle:[@"清晰度" localString] forState:UIControlStateNormal];
         _videoButton.titleLabel.font = [UIFont boldSystemFontOfSize:ALYPVBottomViewTextSizeFont];
         [_videoButton addTarget:self action:@selector(videoButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     }

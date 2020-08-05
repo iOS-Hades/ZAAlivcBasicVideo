@@ -103,7 +103,7 @@ static const CGFloat ALYPVTopViewDownLoadButtonWidth  = 30; //返回按钮宽度
         self.downloadButton.hidden = true;
     }else{
         if (ScreenWidth < ScreenHeight) {
-            self.downloadButton.hidden = false;
+            self.downloadButton.hidden = true;
         }
     }
     if (self.playMethod == ALYPVPlayMethodLocal) {
@@ -121,13 +121,13 @@ static const CGFloat ALYPVTopViewDownLoadButtonWidth  = 30; //返回按钮宽度
         self.speedButton.hidden = true;
         self.danmuButton.hidden = true;
         self.loopViewButton.hidden = true;
-        self.downloadButton.hidden = false;
+        self.downloadButton.hidden = true;
     }else{
         //横屏
-        self.speedButton.hidden = true;
+        self.speedButton.hidden = false;
         self.danmuButton.hidden = true;
         self.loopViewButton.hidden = true;
-        self.downloadButton.hidden = false;
+        self.downloadButton.hidden = true;
     }
     
     self.topBarBG.frame = self.bounds;
