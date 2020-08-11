@@ -45,16 +45,24 @@
     NSArray *definitionArray = @[[@"流畅" localString],[@"超清" localString],[@"标清" localString],[@"原画" localString],[@"高清" localString],[@"2K" localString],[@"4K" localString],[@"低音质" localString],[@"高音质" localString]];
     NSArray *array = @[@"FD",@"HD",@"LD",@"OD",@"SD",@"2K",@"4K",@"SQ",@"HQ"];
     NSInteger index = [definitionArray indexOfObject:str];
-    NSString * nameStr = [array objectAtIndex:index] ;
-    return nameStr;
+    if (index < array.count) {
+        NSString * nameStr = [array objectAtIndex:index] ;
+        return nameStr;
+    }else{
+        return str;
+    }
 }
 
 + (NSString *)definitionWithEngStr:(NSString *)str{
     NSArray *definitionArray = @[@"FD",@"HD",@"LD",@"OD",@"SD",@"2K",@"4K",@"SQ",@"HQ"];
     NSArray *array = @[[@"流畅" localString],[@"超清" localString],[@"标清" localString],[@"原画" localString],[@"高清" localString],[@"2K" localString],[@"4K" localString],[@"低音质" localString],[@"高音质" localString]];
     NSInteger index = [definitionArray indexOfObject:str];
-    NSString * nameStr = [array objectAtIndex:index] ;
-    return nameStr;
+    if (index < array.count) {
+        NSString * nameStr = [array objectAtIndex:index] ;
+        return nameStr;
+    }else{
+        return str;
+    }
 }
 
 + (NSString *)getUDSetWithKey:(NSString *)key {

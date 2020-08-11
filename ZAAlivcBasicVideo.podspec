@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ZAAlivcBasicVideo'
-  s.version          = '0.1.4'
+  s.version          = '0.1.4.1'
   s.summary          = '阿里播放器的基础UI'
 
 # This description is used to generate tags and improve search results.

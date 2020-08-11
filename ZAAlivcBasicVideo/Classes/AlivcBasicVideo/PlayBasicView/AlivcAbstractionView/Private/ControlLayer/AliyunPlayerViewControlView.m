@@ -250,10 +250,12 @@ static const CGFloat ALYControlViewLockButtonHeight = 40;   //lockButton 高度
         [self.bottomView.videoButton setTitle:@"码率" forState:UIControlStateNormal];
         [self.bottomView.videoButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         self.bottomView.videoButton.userInteractionEnabled = YES;
-        self.bottomView.videoButton.hidden = true;
+        self.bottomView.videoButton.hidden = false;
     }else {
         [self.bottomView.videoButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
         self.bottomView.videoButton.userInteractionEnabled = NO;
+        [self.bottomView.videoButton setTitle:@"AUTO" forState:UIControlStateNormal];
+        self.bottomView.videoButton.hidden = false;
     }
     
     // 倍数视图
