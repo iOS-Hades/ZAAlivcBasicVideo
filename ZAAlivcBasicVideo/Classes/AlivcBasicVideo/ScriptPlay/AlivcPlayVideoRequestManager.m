@@ -23,33 +23,41 @@
 
 - (NSString *)BASE_URL {
     if (!_BASE_URL) {
-        // 初始值
-        _BASE_URL = @"https://alivc-demo.aliyuncs.com";
+        // 初始值 https://api.mapgin.com/mapgin_app/alisdk/aliyunVideo/getVideoPlayAuth
+        _BASE_URL = @"https://api.mapgin.com";
     }
     return _BASE_URL;
 }
 
+- (NSString *)URL_PATH {
+    if (!_URL_PATH) {
+        _URL_PATH = @"/mapgin_app/alisdk";
+    }
+    return _URL_PATH;
+}
+
 + (NSString *)getUrlFromType:(AVPUrlType)type {
     AlivcPlayVideoRequestManager *m = [self shared];
+    NSString *url = [NSString stringWithFormat:@"%@%@",m.BASE_URL,m.URL_PATH];
     switch (type) {
         case AVPUrlTypePlayerVideoSts:
-            return [m.BASE_URL stringByAppendingString:@"/player/getVideoSts"];
+            return [url stringByAppendingString:@"/aliyunVideo/getVideoSts"];
         case AVPUrlTypePlayerVideoList:
-            return [m.BASE_URL stringByAppendingString:@"/demo/getVideoList?cateId=1000025282"];
+            return [url stringByAppendingString:@"/demo/getVideoList?cateId=1000025282"];
         case AVPUrlTypePlayerVideoPlayInfo:
-            return [m.BASE_URL stringByAppendingString:@"/player/getVideoPlayInfo"];
+            return [url stringByAppendingString:@"/aliyunVideo/getVideoPlayInfo"];
         case AVPUrlTypePlayerVideoMps:
-            return [m.BASE_URL stringByAppendingString:@"/player/getVideoMps"];
+            return [url stringByAppendingString:@"/aliyunVideo/getVideoMps"];
         case AVPUrlTypePlayerVideoPlayAuth:
-            return [m.BASE_URL stringByAppendingString:@"/player/getVideoPlayAuth"];
+            return [url stringByAppendingString:@"/aliyunVideo/getVideoPlayAuth"];
         case AVPUrlTypeRandomUser:
-            return [m.BASE_URL stringByAppendingString:@"/user/randomUser"];
+            return [url stringByAppendingString:@"/user/randomUser"];
         case AVPUrlTypeGetRecommendVideoList:
-            return [m.BASE_URL stringByAppendingString:@"/vod/getRecommendVideoList"];
+            return [url stringByAppendingString:@"/vod/getRecommendVideoList"];
         case AVPUrlTypePlayerVideoLiveSts:
-            return [m.BASE_URL stringByAppendingString:@"/player/getLiveEncryptSts"];
+            return [url stringByAppendingString:@"/aliyunVideo/getLiveEncryptSts"];
         default:
-            return m.BASE_URL;
+            return url;
     }
 }
 
