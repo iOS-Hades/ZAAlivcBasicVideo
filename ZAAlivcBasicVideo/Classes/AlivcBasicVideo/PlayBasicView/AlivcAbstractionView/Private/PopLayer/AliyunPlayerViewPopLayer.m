@@ -92,7 +92,7 @@ static const CGFloat ALYPVPopBackButtonWidth  = 24;  //返回按钮宽度
         {
             tempString = [AliyunUtil playFinishTips];
             if (!tempString) {
-                tempString = NSLocalizedStringFromTableInBundle(@"Watch again, please click replay", nil, resourceBundle, nil);
+                tempString = NSLocalizedStringFromTableInBundle(@"再次观看，请点击重播", nil, resourceBundle, nil);
             }
             type = ALYPVErrorTypeReplay;
         }
@@ -101,7 +101,7 @@ static const CGFloat ALYPVPopBackButtonWidth  = 24;  //返回按钮宽度
         {
             tempString = [AliyunUtil networkTimeoutTips];
             if (!tempString) {
-                tempString = NSLocalizedStringFromTableInBundle(@"The current network is not good. Please click replay later", nil, resourceBundle, nil);
+                tempString = NSLocalizedStringFromTableInBundle(@"当前的网络不好。 请稍后点击重播", nil, resourceBundle, nil);
             }
             type = ALYPVErrorTypeReplay;
         }
@@ -110,7 +110,7 @@ static const CGFloat ALYPVPopBackButtonWidth  = 24;  //返回按钮宽度
         {
             tempString = [AliyunUtil networkUnreachableTips];
             if (!tempString) {
-                tempString = NSLocalizedStringFromTableInBundle(@"No network connection, check the network, click replay", nil, resourceBundle, nil);
+                tempString = NSLocalizedStringFromTableInBundle(@"没有网络连接，请检查网络，点击重播", nil, resourceBundle, nil);
             }
             type = ALYPVErrorTypeReplay;
         }
@@ -119,7 +119,7 @@ static const CGFloat ALYPVPopBackButtonWidth  = 24;  //返回按钮宽度
         {
             tempString = [AliyunUtil loadingDataErrorTips];
             if (!tempString) {
-                tempString = NSLocalizedStringFromTableInBundle(@"Video loading error, please click replay", nil, resourceBundle, nil);
+                tempString = NSLocalizedStringFromTableInBundle(@"视频加载错误，请点击重播", nil, resourceBundle, nil);
             }
             type = ALYPVErrorTypeRetry;
         }
@@ -135,7 +135,7 @@ static const CGFloat ALYPVPopBackButtonWidth  = 24;  //返回按钮宽度
             
             tempString = [AliyunUtil switchToMobileNetworkTips];
             if (!tempString) {
-                tempString = NSLocalizedStringFromTableInBundle(@"For mobile networks, click play", nil, resourceBundle, nil);
+                tempString = NSLocalizedStringFromTableInBundle(@"当前是移动网络，请点击播放", nil, resourceBundle, nil);
             }
             type = ALYPVErrorTypePause;
             

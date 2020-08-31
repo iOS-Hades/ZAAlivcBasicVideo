@@ -107,19 +107,19 @@ static const CGFloat AliyunPlayerViewErrorViewRadius        = 4;   //半径
     NSBundle *resourceBundle = [AliyunUtil languageBundle];
     switch (type) {
         case ALYPVErrorTypeUnknown:
-             str = NSLocalizedStringFromTableInBundle(@"Retry", nil, resourceBundle, nil);
+             str = NSLocalizedStringFromTableInBundle(@"重试", nil, resourceBundle, nil);
             break;
         case ALYPVErrorTypeRetry:
-            str = NSLocalizedStringFromTableInBundle(@"Retry", nil, resourceBundle, nil);
+            str = NSLocalizedStringFromTableInBundle(@"重试", nil, resourceBundle, nil);
             break;
         case ALYPVErrorTypeReplay:
-            str = NSLocalizedStringFromTableInBundle(@"Replay", nil, resourceBundle, nil);
+            str = NSLocalizedStringFromTableInBundle(@"重播", nil, resourceBundle, nil);
             break;
         case ALYPVErrorTypePause:
-            str = NSLocalizedStringFromTableInBundle(@"Play", nil, resourceBundle, nil);
+            str = NSLocalizedStringFromTableInBundle(@"播放", nil, resourceBundle, nil);
             break;
         case ALYPVErrorTypeStsExpired:
-            str = NSLocalizedStringFromTableInBundle(@"Retry", nil, resourceBundle, nil);
+            str = NSLocalizedStringFromTableInBundle(@"重试", nil, resourceBundle, nil);
             break;
         default:
             break;

@@ -30,7 +30,7 @@ static const CGFloat AlilyunViewLoadingViewMargin         = 2;    //间隙
 - (UILabel *)tipLabelView{
     if (!_tipLabelView) {
         NSBundle *resourceBundle = [AliyunUtil languageBundle];
-        NSString *str = NSLocalizedStringFromTableInBundle(@"loading", nil, resourceBundle, nil);
+        NSString *str = NSLocalizedStringFromTableInBundle(@"加载中", nil, resourceBundle, nil);
         _tipLabelView = [[UILabel alloc] init];
         [_tipLabelView setText:str];
         [_tipLabelView setTextColor:kALYPVColorTextNomal];

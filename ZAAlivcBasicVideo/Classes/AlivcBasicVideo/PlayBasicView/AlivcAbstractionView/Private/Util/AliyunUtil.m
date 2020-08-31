@@ -190,13 +190,13 @@ static NSString * const ALYPVVersion  = @"3.4.0";
 //获取所有已知清晰度泪飙
 + (NSArray<NSString *> *)allQualities {
     NSBundle *resourceBundle = [[self class] languageBundle];
-    return @[NSLocalizedStringFromTableInBundle(@"VOD_FD", nil, resourceBundle, nil),
-             NSLocalizedStringFromTableInBundle(@"VOD_LD", nil, resourceBundle, nil),
-             NSLocalizedStringFromTableInBundle(@"VOD_SD", nil, resourceBundle, nil),
-             NSLocalizedStringFromTableInBundle(@"VOD_HD", nil, resourceBundle, nil),
-             NSLocalizedStringFromTableInBundle(@"VOD_2K", nil, resourceBundle, nil),
-             NSLocalizedStringFromTableInBundle(@"VOD_4K", nil, resourceBundle, nil),
-             NSLocalizedStringFromTableInBundle(@"VOD_OD", nil, resourceBundle, nil),
+    return @[NSLocalizedStringFromTableInBundle(@"流畅", nil, resourceBundle, nil),
+             NSLocalizedStringFromTableInBundle(@"标清", nil, resourceBundle, nil),
+             NSLocalizedStringFromTableInBundle(@"高清", nil, resourceBundle, nil),
+             NSLocalizedStringFromTableInBundle(@"超清", nil, resourceBundle, nil),
+             NSLocalizedStringFromTableInBundle(@"2K", nil, resourceBundle, nil),
+             NSLocalizedStringFromTableInBundle(@"4K", nil, resourceBundle, nil),
+             NSLocalizedStringFromTableInBundle(@"OD", nil, resourceBundle, nil),
              ];
 }
 

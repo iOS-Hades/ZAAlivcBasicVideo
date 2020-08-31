@@ -132,9 +132,9 @@ static const CGFloat ALYFirstStartGuideViewLeftIVHeight     = 58;      //leftIma
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.lineSpacing = ALYFirstStartGuideViewMargin;// 字体的行间距
     
-    NSString *center = NSLocalizedStringFromTableInBundle(@"center", nil, resourceBundle, nil);
-    NSString *progress = NSLocalizedStringFromTableInBundle(@"progress", nil, resourceBundle, nil);
-    NSString *control = NSLocalizedStringFromTableInBundle(@"control", nil, resourceBundle, nil);
+    NSString *center = NSLocalizedStringFromTableInBundle(@"中心", nil, resourceBundle, nil);
+    NSString *progress = NSLocalizedStringFromTableInBundle(@"进度", nil, resourceBundle, nil);
+    NSString *control = NSLocalizedStringFromTableInBundle(@"调节", nil, resourceBundle, nil);
     NSString *centerStr = [NSString stringWithFormat:@"%@\n %@ %@",center,progress,control];
 //    @"中心\n  进度调节";
     NSMutableAttributedString *maString = [[NSMutableAttributedString alloc] initWithString:centerStr];
@@ -155,8 +155,8 @@ static const CGFloat ALYFirstStartGuideViewLeftIVHeight     = 58;      //leftIma
     self.leftLabel.frame= frame1;
     self.leftLabel.numberOfLines = 999;
     self.leftLabel.textColor = [UIColor whiteColor];
-    NSString *left = NSLocalizedStringFromTableInBundle(@"left", nil, resourceBundle, nil);
-    NSString *brightness = NSLocalizedStringFromTableInBundle(@"brightness", nil, resourceBundle, nil);
+    NSString *left = NSLocalizedStringFromTableInBundle(@"左侧", nil, resourceBundle, nil);
+    NSString *brightness = NSLocalizedStringFromTableInBundle(@"亮度", nil, resourceBundle, nil);
     NSString *centerStr1 = [NSString stringWithFormat:@"%@\n %@ %@",
                                                   left,
                                                   brightness,
@@ -180,8 +180,8 @@ static const CGFloat ALYFirstStartGuideViewLeftIVHeight     = 58;      //leftIma
     self.rightLabel.numberOfLines = 999;
     self.rightLabel.textColor = [UIColor whiteColor];
     
-    NSString *right = NSLocalizedStringFromTableInBundle(@"right", nil, resourceBundle, nil);
-    NSString *volume = NSLocalizedStringFromTableInBundle(@"volume", nil, resourceBundle, nil);
+    NSString *right = NSLocalizedStringFromTableInBundle(@"右侧", nil, resourceBundle, nil);
+    NSString *volume = NSLocalizedStringFromTableInBundle(@"音量", nil, resourceBundle, nil);
     NSString *centerStr3 = [NSString stringWithFormat:@"%@\n %@ %@",right,volume,control];
     
 //    @"右侧\n  音量调节";
